@@ -1,0 +1,37 @@
+package com.mochimexa.ecommerce.model;
+
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Entity
+@Table(name = "carrito")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+public class Cart {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_carrito")
+    private Long idCarrito;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "estado", nullable = false, length = 20)
+    private String estado;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usario", nullable = false)
+    @ToString.Exclude
+    private User usuario;
+
+
+}

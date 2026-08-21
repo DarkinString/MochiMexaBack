@@ -1,29 +1,30 @@
 package com.mochimexa.ecommerce.model;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "categoria")
+@Table(name = "producto_promocion")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Category {
+public class ProductPromotion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_categoria")
-    private Long idCategoria;
+    @Column(name = "id_producto_promocion")
+    private Long idProductPromocion;
 
-    @Column(name = "nombre", nullable = false, length = 100, unique = true)
-    private String nombre;
+    @ManyToOne
+    @JoinColumn(name = "id_producto", nullable = false)
+    @ToString.Exclude
+    private Product producto;
 
-    @Column(name = "activo", nullable = false)
-    private boolean activo;
+
+
 }
