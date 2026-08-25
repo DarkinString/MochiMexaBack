@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     //BUSCAR USUARIO POR ID
-    Optional<User> findByIdUsuario(Integer idUsuario);
+    Optional<User> findByIdUsuario(Long idUsuario);
 
     //BUSCAR USUARIO POR CORREO
     Optional<User> findByCorreo(String correo);
