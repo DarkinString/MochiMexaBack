@@ -14,15 +14,16 @@ import java.time.LocalDateTime;
 @Setter
 public class UserRequestDTO {
 
-    private String name;
+    private String nombre;
     private String apellido;
-    private String email;
+    private String correo;
     private String contrasenia;
     private String telefono;
-    private Long categoryId;
-    private LocalDateTime fechaRegistro;
-    private Boolean activo;
-    private String rol;
+    //private Long categoryId;
+    //private LocalDateTime fechaRegistro;
+    //private Boolean activo;
+    //private String rol;
+    private Long idRol;
 
 
 

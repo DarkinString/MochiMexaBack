@@ -10,8 +10,8 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     //BUSCAR CATEGORIA POR NOMBRE
-    Optional<Category> findByNameIgnoreCase(String nombre);
+    Optional<Category> findByNombreIgnoreCase(String nombre);
 
     //LISTAR CATEGORIAS ACTIVAS
-    List<Category> findActivoTrue();
+    List<Category> findByActivoTrue();
 }

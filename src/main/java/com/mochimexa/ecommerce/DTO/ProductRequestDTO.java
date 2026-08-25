@@ -20,6 +20,7 @@ public class ProductRequestDTO {
     private BigDecimal precio;
     private Integer stock;
     private Boolean activo;
+    private Long idCategoria;
 
     public ProductRequestDTO() {}
 

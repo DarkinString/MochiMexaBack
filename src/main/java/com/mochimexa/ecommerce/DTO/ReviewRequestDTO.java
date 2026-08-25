@@ -18,6 +18,9 @@ public class ReviewRequestDTO {
     @NotNull(message = "El ID del producto es obligatorio")
     private Long idProducto;
 
+    @NotNull(message = "El ID del usuario es obligatorio")
+    private Long idUsuario;
+
     @NotNull(message = "La calificación es obligatoria")
     @Min(value = 1, message = "La calificación mínima es 1 estrella")
     @Max(value = 5, message = "La calificación máxima es 5 estrellas")

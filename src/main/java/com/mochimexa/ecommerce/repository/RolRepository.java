@@ -11,5 +11,5 @@ public interface RolRepository extends JpaRepository<Rol, Long> {
     //BUSCAR ROL POR NOMBRE
     Optional<Rol> findByNombreIgnoreCase(String nombre);
 
-    //Optional<Rol> findByIdRol(Long idRol);
+    //Optional<Rol> findById(Long idRol);
 }

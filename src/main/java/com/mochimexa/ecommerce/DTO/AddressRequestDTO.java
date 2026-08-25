@@ -23,7 +23,7 @@ public class AddressRequestDTO {
     private String numero;
 
     @NotBlank(message = "La colonia es obligatoria")
-    @Size(max = 20, message = "La colonia no puede exceder los 20 caracteres")
+    @Size(max = 30, message = "La colonia no puede exceder los 30 caracteres")
     private String colonia;
 
     @NotBlank(message = "El código postal es obligatorio")
@@ -35,7 +35,7 @@ public class AddressRequestDTO {
     private String ciudad;
 
     @NotBlank(message = "El estado es obligatorio")
-    @Size(max = 10, message = "El estado no puede exceder los 10 caracteres")
+    @Size(max = 30, message = "El estado no puede exceder los 30 caracteres")
     private String estado;
 
     @Size(max = 150, message = "La referencia no puede exceder los 150 caracteres")

@@ -20,12 +20,12 @@ public class ReviewController {
     }
     @GetMapping("/product/{productId}")
     public List<Review> getByProductId(@PathVariable Long productId) {
-        return reviewService.findByProductId(productId);
+        return reviewService.findByProductoId(productId);
     }
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public Review create(@PathVariable Long userId, @Valid @RequestBody ReviewRequestDTO dto) {
-        return reviewService.create(userId, dto);
+        return reviewService.create(dto);
     }
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

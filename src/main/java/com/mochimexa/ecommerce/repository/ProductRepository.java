@@ -10,10 +10,10 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     //BUSCAR PRODUCTOS POR NOMBRE
-    List<Product> findByNameContainingIgnoreCase(String nombre);
+    List<Product> findByNombreContainingIgnoreCase(String nombre);
 
     //BUSCAR PRODUCTOS CON PRECIO MAYOR AL INDICADO
-    List<Product> findByPriceGreaterThan(BigDecimal precio);
+    List<Product> findByPrecioGreaterThan(BigDecimal precio);
 
     // BUSCAR PRECIO POR RANGO
     List<Product> findByPrecioBetween(BigDecimal precioMin, BigDecimal precioMax);
@@ -22,6 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     //List<Product> findByMarcaIgnoreCase(String marca); //FALTA AGREGAR MARCA A CLASE PRODUCTO
 
     //BUSCAR PRODUCTOS POR EL ID DE SU CATEGORIA
-    List<Product> findByCategoryId(Long idCategoria);
+    List<Product> findByCategoria_IdCategoria(Long idCategoria);
 
 }

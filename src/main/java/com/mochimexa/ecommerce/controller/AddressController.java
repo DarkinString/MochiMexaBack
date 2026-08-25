@@ -1,6 +1,7 @@
 package com.mochimexa.ecommerce.controller;
 
 import com.mochimexa.ecommerce.DTO.AddressRequestDTO;
+import com.mochimexa.ecommerce.DTO.AddressResponseDTO;
 import com.mochimexa.ecommerce.model.Address;
 import com.mochimexa.ecommerce.service.AddressService;
 import jakarta.validation.Valid;
@@ -20,18 +21,18 @@ public class AddressController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<Address> getByUserId(@PathVariable Long userId) {
+    public List<AddressResponseDTO> getByUserId(@PathVariable Long userId) {
         return addressService.findByUserId(userId);
     }
 
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Address create(@PathVariable Long userId, @Valid @RequestBody AddressRequestDTO dto) {
+    public AddressResponseDTO create(@PathVariable Long userId, @Valid @RequestBody AddressRequestDTO dto) {
         return addressService.create(userId, dto);
     }
 
     @PutMapping("/{id}")
-    public Address update(@PathVariable Long id, @Valid @RequestBody AddressRequestDTO dto) {
+    public AddressResponseDTO update(@PathVariable Long id, @Valid @RequestBody AddressRequestDTO dto) {
         return addressService.update(id, dto);
     }
 

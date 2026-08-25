@@ -1,5 +1,6 @@
 package com.mochimexa.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "dirección")
+@Table(name = "direccion")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,8 +19,8 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_dirección")
-    private Long IdDireccion;
+    @Column(name = "id_direccion")
+    private Long idDireccion;
 
     @Column(name ="calle", nullable = false,length = 150)
     private String calle;
@@ -42,7 +43,8 @@ public class Address {
     @Column(name = "referencia",length = 150)
     private String referencia;
 
-    @ManyToOne
+    //SE MODIFICO AGREGANDO fetch = FetchType.LAZY
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario",nullable = false)
     @ToString.Exclude
     private User usuario;

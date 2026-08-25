@@ -30,7 +30,7 @@ public class Order {
     @Column(name = "sub_total", nullable = false, precision = 10, scale = 2)
     private BigDecimal subTotal;
 
-    @Column(name = "costo_envío", nullable = false, precision = 10, scale = 2)
+    @Column(name = "costo_envio", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoEnvio;
 
     @Column(name = "total", nullable = false,precision = 10, scale = 2)

@@ -23,7 +23,7 @@ public class Review {
     private Long idResenias;
 
     @Column(name = "calificacion", nullable = false)
-    private Integer calification;
+    private Integer calificacion;
 
     @Column(name = "comentario", columnDefinition = "TEXT")
     private String comentario;
@@ -36,6 +36,10 @@ public class Review {
     @ToString.Exclude
     private User usuario;
 
-
+    //SE AGREGA LA RELACION CON PRODUCTO
+    @ManyToOne
+    @JoinColumn(name = "id_producto", nullable = false)
+    @ToString.Exclude
+    private Product producto;
 
 }
