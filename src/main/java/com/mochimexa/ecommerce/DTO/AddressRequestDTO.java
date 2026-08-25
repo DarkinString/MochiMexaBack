@@ -39,5 +39,5 @@ public class AddressRequestDTO {
     private String estado;
 
     @Size(max = 150, message = "La referencia no puede exceder los 150 caracteres")
-    private String referencia; // Opcional
+    private String referencia;
 }

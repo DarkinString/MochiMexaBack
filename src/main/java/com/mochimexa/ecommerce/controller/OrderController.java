@@ -19,20 +19,15 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    // Realizar checkout: crea la orden para un usuario a partir de su carrito y dirección
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public Order createOrder(@PathVariable Long userId, @Valid @RequestBody OrderRequestDTO dto) {
         return orderService.createOrderFromCart(userId, dto);
     }
-
-    // Obtener el historial de pedidos de un usuario por su userId
     @GetMapping("/user/{userId}")
     public List<Order> getOrdersByUser(@PathVariable Long userId) {
         return orderService.findByUserId(userId);
     }
-
-    // Consultar una orden específica por su idPedido
     @GetMapping("/{id}")
     public Order getById(@PathVariable Long id) {
         return orderService.findById(id);
