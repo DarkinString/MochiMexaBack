@@ -1,5 +1,6 @@
 package com.mochimexa.ecommerce.model;
-
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -29,9 +30,17 @@ public class Cart {
     private String estado;
 
     @ManyToOne
-    @JoinColumn(name = "id_usario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
     @ToString.Exclude
     private User usuario;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartDetail> detalles = new ArrayList<>();
+
+    public void addDetalle(CartDetail detalle) {
+        detalles.add(detalle);
+        detalle.setCarrito(this);
+    }
 
 
 }
