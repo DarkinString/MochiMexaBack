@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,4 +30,7 @@ public class ReviewRequestDTO {
 
     @Size(max = 1000, message = "El comentario no puede exceder los 1000 caracteres")
     private String comentario;
+
+    @NotNull(message = "La fecha es obligatoria")
+    private LocalDateTime fecha;
 }

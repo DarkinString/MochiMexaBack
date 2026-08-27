@@ -19,10 +19,8 @@ public class UserRequestDTO {
     private String correo;
     private String contrasenia;
     private String telefono;
-    //private Long categoryId;
-    //private LocalDateTime fechaRegistro;
-    //private Boolean activo;
-    //private String rol;
+    private LocalDateTime fechaRegistro;
+    private Boolean activo;
     private Long idRol;
 
 
