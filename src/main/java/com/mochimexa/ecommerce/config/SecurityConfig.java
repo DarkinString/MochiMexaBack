@@ -21,27 +21,68 @@ public class SecurityConfig {
             HttpSecurity http,
             JwtAuthenticationFilter jwtFilter
     ) throws Exception {
+
         return http
                 .csrf(csrf -> csrf.disable())
+
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
+                )
+
                 .authorizeHttpRequests(auth -> auth
-                        // Endpoints públicos
-                        .requestMatchers("/auth/**", "/error").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/categories/**", "/products/**").permitAll() // Consulta pública de catálogo
-                        // Todo lo demás requiere token válido (CARRITO, ORDENES, USERS)
-                        .anyRequest().authenticated())
-                .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint((request, response, exception) -> {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                            response.getWriter().write("{\"error\":\"Unauthorized\",\"message\":\"Se requiere un JWT válido\"}");
-                        }))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
+                        // LOGIN Y AUTENTICACIÓN
+                        .requestMatchers(
+                                "/auth/**",
+                                "/error"
+                        ).permitAll()
+
+                        // REGISTRO DE USUARIO
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/user"
+                        ).permitAll()
+
+                        // CATÁLOGO PÚBLICO
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/categories/**",
+                                "/api/products/**"
+                        ).permitAll()
+
+                        // TODO LO DEMÁS REQUIERE JWT
+                        .anyRequest().authenticated()
+                )
+
+                .exceptionHandling(exceptions ->
+                        exceptions.authenticationEntryPoint(
+                                (request, response, exception) -> {
+
+                                    response.setStatus(
+                                            HttpServletResponse.SC_UNAUTHORIZED
+                                    );
+
+                                    response.setContentType(
+                                            MediaType.APPLICATION_JSON_VALUE
+                                    );
+
+                                    response.getWriter().write(
+                                            "{\"error\":\"Unauthorized\","
+                                                    + "\"message\":\"Se requiere un JWT válido\"}"
+                                    );
+                                }
+                        )
+                )
+
+                .addFilterBefore(
+                        jwtFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                )
+
                 .build();
     }
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

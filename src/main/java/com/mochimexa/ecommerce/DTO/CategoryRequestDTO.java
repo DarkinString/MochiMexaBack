@@ -18,6 +18,10 @@ public class CategoryRequestDTO {
     @Size(min = 1, max = 100, message = "El nombre debe tener entre 1 y 100 caracteres")
     private String nombre;
 
+    @NotBlank(message = "La descripción de la categoría es obligatoria")
+    @Size(max = 255, message = "La descripción no debe superar 255 caracteres")
+    private String descripcion;
+
     @NotNull(message = "El estado activo es un campo obligatorio")
     private Boolean activo;
 }

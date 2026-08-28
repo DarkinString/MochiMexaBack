@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 /*
  * DTO = Data Transfer Object.
- * Representa el JSON que el cliente envía al crear o actualizar un producto.
+ * Representa el JSON que el cliente envía al crear o actualizar un usuario.
  * No es @Entity porque este objeto no representa una tabla de MySQL.
  */
 @Getter
@@ -21,10 +21,7 @@ public class UserRequestDTO {
     private String telefono;
     private LocalDateTime fechaRegistro;
     private Boolean activo;
-    private Long idRol;
-
-
+    private Integer idRol;
 
     public UserRequestDTO() {}
-
 }

@@ -3,6 +3,7 @@ package com.mochimexa.ecommerce.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "pago")
+@Table(name = "metodo_pago")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,11 +21,14 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_pago")
-    private Long idPago;
+    @Column(name = "id_metodo_pago")
+    private Integer idMetodoPago;
 
-    @Column(name = "método_pago", nullable = false, length = 30)
-    private String metodoPago;
+    @Column(name = "tipo_pago", nullable = false, length = 30)
+    private String tipoPago;
+
+    @Column(name = "monto", nullable = false, precision = 10, scale = 2)
+    private BigDecimal monto;
 
     @Column(name = "fecha_pago")
     private LocalDateTime fechaPago;
@@ -36,6 +40,4 @@ public class Payment {
     @JoinColumn(name = "id_pedido", nullable = false)
     @ToString.Exclude
     private Order pedido;
-
-
 }

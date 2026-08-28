@@ -2,6 +2,7 @@ package com.mochimexa.ecommerce.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_resenias")
-    private Long idResenias;
+    private Integer idResenias;
 
     @Column(name = "calificacion", nullable = false)
     private Integer calificacion;
@@ -36,10 +37,8 @@ public class Review {
     @ToString.Exclude
     private User usuario;
 
-    //SE AGREGA LA RELACION CON PRODUCTO
     @ManyToOne
     @JoinColumn(name = "id_producto", nullable = false)
     @ToString.Exclude
     private Product producto;
-
 }

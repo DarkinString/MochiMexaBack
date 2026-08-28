@@ -5,19 +5,25 @@ import com.mochimexa.ecommerce.DTO.AddressResponseDTO;
 import com.mochimexa.ecommerce.model.Address;
 import com.mochimexa.ecommerce.model.User;
 import com.mochimexa.ecommerce.repository.AddressRepository;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class AddressService {
 
     private final AddressRepository addressRepository;
     private final UserService userService;
 
-    public AddressService(AddressRepository addressRepository, UserService userService) {
+    public AddressService(
+            AddressRepository addressRepository,
+            UserService userService
+    ) {
         this.addressRepository = addressRepository;
         this.userService = userService;
     }
@@ -31,14 +37,18 @@ public class AddressService {
     }
 
     @Transactional(readOnly = true)
-    public AddressResponseDTO findById(Long id) {
+    public AddressResponseDTO findById(Integer id) {
         Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dirección no encontrada"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Dirección no encontrada"
+                ));
+
         return convertToDTO(address);
     }
 
     @Transactional(readOnly = true)
-    public List<AddressResponseDTO> findByUserId(Long userId) {
+    public List<AddressResponseDTO> findByUserId(Integer userId) {
         return addressRepository.findByUsuarioIdUsuario(userId)
                 .stream()
                 .map(this::convertToDTO)
@@ -46,7 +56,10 @@ public class AddressService {
     }
 
     @Transactional
-    public AddressResponseDTO create(Long userId, AddressRequestDTO dto) {
+    public AddressResponseDTO create(
+            Integer userId,
+            AddressRequestDTO dto
+    ) {
         User usuario = userService.findById(userId);
 
         Address address = new Address();
@@ -60,13 +73,20 @@ public class AddressService {
         address.setUsuario(usuario);
 
         Address savedAddress = addressRepository.save(address);
+
         return convertToDTO(savedAddress);
     }
 
     @Transactional
-    public AddressResponseDTO update(Long id, AddressRequestDTO dto) {
+    public AddressResponseDTO update(
+            Integer id,
+            AddressRequestDTO dto
+    ) {
         Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dirección no encontrada"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Dirección no encontrada"
+                ));
 
         address.setCalle(dto.getCalle());
         address.setNumero(dto.getNumero());
@@ -77,18 +97,22 @@ public class AddressService {
         address.setReferencia(dto.getReferencia());
 
         Address updatedAddress = addressRepository.save(address);
+
         return convertToDTO(updatedAddress);
     }
 
     @Transactional
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         if (!addressRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dirección no encontrada");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Dirección no encontrada"
+            );
         }
+
         addressRepository.deleteById(id);
     }
 
-    // Método mapeador privado
     private AddressResponseDTO convertToDTO(Address address) {
         return new AddressResponseDTO(
                 address.getIdDireccion(),
@@ -99,8 +123,9 @@ public class AddressService {
                 address.getCiudad(),
                 address.getEstado(),
                 address.getReferencia(),
-                address.getUsuario() != null ? address.getUsuario().getIdUsuario() : null
+                address.getUsuario() != null
+                        ? address.getUsuario().getIdUsuario()
+                        : null
         );
     }
-
 }

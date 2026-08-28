@@ -3,7 +3,6 @@ package com.mochimexa.ecommerce.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import lombok.*;
 
@@ -19,7 +18,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pedido")
-    private Long idPedido;
+    private Integer idPedido;
 
     @Column(name = "fecha_pedido", nullable = false)
     private LocalDateTime fechaPedido;
@@ -33,16 +32,11 @@ public class Order {
     @Column(name = "costo_envio", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoEnvio;
 
-    @Column(name = "total", nullable = false,precision = 10, scale = 2)
+    @Column(name = "total", nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     @ToString.Exclude
-    private  User usuario;
-
-    @ManyToOne
-    @JoinColumn(name = "id_dirección", nullable = false)
-    @ToString.Exclude
-    private Address direccion;
+    private User usuario;
 }

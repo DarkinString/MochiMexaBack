@@ -1,10 +1,12 @@
 package com.mochimexa.ecommerce.DTO;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,6 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderRequestDTO {
 
-    @NotNull(message = "Debes seleccionar una dirección de envío")
-    private Long idDireccion;
+    @NotEmpty(message = "Debes seleccionar al menos una dirección de envío")
+    private List<Integer> idDirecciones;
 }

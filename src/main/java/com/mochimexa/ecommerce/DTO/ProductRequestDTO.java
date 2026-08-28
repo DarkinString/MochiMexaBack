@@ -1,6 +1,5 @@
 package com.mochimexa.ecommerce.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,15 +12,15 @@ import java.math.BigDecimal;
  */
 @Getter
 @Setter
-
 public class ProductRequestDTO {
+
     private String nombre;
     private String descripcion;
     private BigDecimal precio;
     private Integer stock;
+    private String marca;
     private Boolean activo;
-    private Long idCategoria;
+    private Integer idCategoria;
 
     public ProductRequestDTO() {}
-
 }

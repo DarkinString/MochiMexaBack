@@ -18,10 +18,10 @@ import java.time.LocalDateTime;
 public class ReviewRequestDTO {
 
     @NotNull(message = "El ID del producto es obligatorio")
-    private Long idProducto;
+    private Integer idProducto;
 
     @NotNull(message = "El ID del usuario es obligatorio")
-    private Long idUsuario;
+    private Integer idUsuario;
 
     @NotNull(message = "La calificación es obligatoria")
     @Min(value = 1, message = "La calificación mínima es 1 estrella")

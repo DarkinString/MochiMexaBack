@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AddressResponseDTO {
 
-    private Long idDireccion;
+    private Integer idDireccion;
     private String calle;
     private String numero;
     private String colonia;
@@ -19,5 +19,5 @@ public class AddressResponseDTO {
     private String ciudad;
     private String estado;
     private String referencia;
-    private Long idUsuario;
+    private Integer idUsuario;
 }

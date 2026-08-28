@@ -6,13 +6,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginRequest {
-    private String username;
+
+    private String correo;
     private String password;
 
     public LoginRequest() {}
 
-    public LoginRequest(String username, String password) {
-        this.username = username;
+    public LoginRequest(String correo, String password) {
+        this.correo = correo;
         this.password = password;
     }
 }

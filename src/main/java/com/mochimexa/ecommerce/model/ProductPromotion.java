@@ -1,4 +1,5 @@
 package com.mochimexa.ecommerce.model;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -18,13 +19,15 @@ public class ProductPromotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto_promocion")
-    private Long idProductPromocion;
+    private Integer idProductoPromocion;
 
     @ManyToOne
     @JoinColumn(name = "id_producto", nullable = false)
     @ToString.Exclude
     private Product producto;
 
-
-
+    @ManyToOne
+    @JoinColumn(name = "id_promociones", nullable = false)
+    @ToString.Exclude
+    private Promotion promocion;
 }

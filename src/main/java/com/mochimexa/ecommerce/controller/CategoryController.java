@@ -3,7 +3,9 @@ package com.mochimexa.ecommerce.controller;
 import com.mochimexa.ecommerce.DTO.CategoryRequestDTO;
 import com.mochimexa.ecommerce.model.Category;
 import com.mochimexa.ecommerce.service.CategoryService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,24 +27,29 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public Category getById(@PathVariable Long id) {
+    public Category getById(@PathVariable Integer id) {
         return categoryService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Category create(@Valid @RequestBody CategoryRequestDTO dto) {
+    public Category create(
+            @Valid @RequestBody CategoryRequestDTO dto
+    ) {
         return categoryService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public Category update(@PathVariable Long id, @Valid @RequestBody CategoryRequestDTO dto) {
+    public Category update(
+            @PathVariable Integer id,
+            @Valid @RequestBody CategoryRequestDTO dto
+    ) {
         return categoryService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Integer id) {
         categoryService.deleteById(id);
     }
 }

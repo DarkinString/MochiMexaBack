@@ -3,6 +3,7 @@ package com.mochimexa.ecommerce.controller;
 import com.mochimexa.ecommerce.DTO.ProductRequestDTO;
 import com.mochimexa.ecommerce.model.Product;
 import com.mochimexa.ecommerce.service.ProductService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
+    public Product getById(@PathVariable Integer id) {
         return productService.findById(id);
     }
 
@@ -35,13 +36,16 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Product update(@PathVariable Long id, @RequestBody ProductRequestDTO dto) {
+    public Product update(
+            @PathVariable Integer id,
+            @RequestBody ProductRequestDTO dto
+    ) {
         return productService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Integer id) {
         productService.deleteById(id);
     }
 }

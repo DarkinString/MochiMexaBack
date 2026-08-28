@@ -3,6 +3,9 @@ package com.mochimexa.ecommerce.controller;
 import com.mochimexa.ecommerce.DTO.UserRequestDTO;
 import com.mochimexa.ecommerce.model.User;
 import com.mochimexa.ecommerce.service.UserService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,24 +27,27 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable Long id) {
+    public User getById(@PathVariable Integer id) {
         return userService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody UserRequestDTO dto) {
+    public User create(@Valid @RequestBody UserRequestDTO dto) {
         return userService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable Long id, @RequestBody UserRequestDTO dto) {
+    public User update(
+            @PathVariable Integer id,
+            @Valid @RequestBody UserRequestDTO dto
+    ) {
         return userService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Integer id) {
         userService.deleteById(id);
     }
 }

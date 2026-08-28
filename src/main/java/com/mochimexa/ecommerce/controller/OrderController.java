@@ -3,7 +3,9 @@ package com.mochimexa.ecommerce.controller;
 import com.mochimexa.ecommerce.DTO.OrderRequestDTO;
 import com.mochimexa.ecommerce.model.Order;
 import com.mochimexa.ecommerce.service.OrderService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,15 +23,24 @@ public class OrderController {
 
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Order createOrder(@PathVariable Long userId, @Valid @RequestBody OrderRequestDTO dto) {
+    public Order createOrder(
+            @PathVariable Integer userId,
+            @Valid @RequestBody OrderRequestDTO dto
+    ) {
         return orderService.createOrderFromCart(userId, dto);
     }
+
     @GetMapping("/user/{userId}")
-    public List<Order> getOrdersByUser(@PathVariable Long userId) {
+    public List<Order> getOrdersByUser(
+            @PathVariable Integer userId
+    ) {
         return orderService.findByUsuarioId(userId);
     }
+
     @GetMapping("/{id}")
-    public Order getById(@PathVariable Long id) {
+    public Order getById(
+            @PathVariable Integer id
+    ) {
         return orderService.findById(id);
     }
 }

@@ -19,11 +19,14 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categoria")
-    private Long idCategoria;
+    private Integer idCategoria;
 
     @Column(name = "nombre", nullable = false, length = 100, unique = true)
     private String nombre;
 
+    @Column(name = "descripcion", nullable = false, length = 255)
+    private String descripcion;
+
     @Column(name = "activo", nullable = false)
-    private boolean activo;
+    private Boolean activo;
 }

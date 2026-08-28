@@ -21,7 +21,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_carrito")
-    private Long idCarrito;
+    private Integer idCarrito;
 
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
@@ -34,7 +34,7 @@ public class Cart {
     @ToString.Exclude
     private User usuario;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartDetail> detalles = new ArrayList<>();
 
     public void addDetalle(CartDetail detalle) {

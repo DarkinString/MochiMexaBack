@@ -29,7 +29,7 @@ public class JwtService {
             "bWktbGxhdmUtc2VjcmV0YS1wYXJhLWRlbW8tamF2YS1zcHJpbmctc2VjdXJpdHktand0LTIwMjY=";
 
     // 15 minutos.
-    private static final long EXPIRATION_TIME_MS = 1000L * 60 * 15;
+    private static final long EXPIRATION_TIME_MS = 1000L * 60 * 60;
 
     public long getExpirationTimeMs() {
 

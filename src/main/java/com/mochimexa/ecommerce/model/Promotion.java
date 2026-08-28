@@ -6,11 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.aspectj.lang.annotation.Around;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "promociones")
@@ -20,15 +18,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 public class Promotion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_promociones")
-    private Long idPromociones;
+    private Integer idPromociones;
 
     @Column(name = "nombre", nullable = false, length = 150)
     private String nombre;
 
-    @Column(name = "descripción", nullable = false, length = 300)
+    @Column(name = "descripcion", nullable = false, length = 300)
     private String descripcion;
 
     @Column(name = "tipo_descuento", nullable = false, length = 45)
@@ -38,10 +37,11 @@ public class Promotion {
     private BigDecimal valorDescuento;
 
     @Column(name = "fecha_inicio", nullable = false)
+    private LocalDate fechaInicio;
+
+    @Column(name = "fecha_fin", nullable = false)
     private LocalDate fechaFin;
 
     @Column(name = "activo", nullable = false)
     private Boolean activo;
-
-
 }

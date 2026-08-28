@@ -2,6 +2,7 @@ package com.mochimexa.ecommerce.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
-    private Long idProducto;
+    private Integer idProducto;
 
     @Column(name = "nombre", nullable = false, length = 150)
     private String nombre;
@@ -34,6 +35,9 @@ public class Product {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
+    @Column(name = "marca", length = 100)
+    private String marca;
+
     @Column(name = "activo", nullable = false)
     private Boolean activo;
 
@@ -41,6 +45,4 @@ public class Product {
     @JoinColumn(name = "id_categoria", nullable = false)
     @ToString.Exclude
     private Category categoria;
-
-
 }

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "pedido_dirección")
+@Table(name = "pedido_direccion")
 @IdClass(OrderAddressId.class)
 @Getter
 @Setter
@@ -15,7 +15,7 @@ public class OrderAddress {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "id_dirección", nullable = false)
+    @JoinColumn(name = "id_direccion", nullable = false)
     @ToString.Exclude
     private Address direccion;
 

@@ -14,7 +14,7 @@ import lombok.Setter;
 public class AddToCartRequestDTO {
 
     @NotNull(message = "El ID del producto es obligatorio")
-    private Long idProducto;
+    private Integer idProducto;
 
     @NotNull(message = "La cantidad es obligatoria")
     @Min(value = 1, message = "La cantidad debe ser al menos 1")
