@@ -2,6 +2,7 @@ package com.mochimexa.ecommerce.controller;
 
 import com.mochimexa.ecommerce.DTO.OrderRequestDTO;
 import com.mochimexa.ecommerce.model.Order;
+import com.mochimexa.ecommerce.DTO.OrderResponseDTO;
 import com.mochimexa.ecommerce.service.OrderService;
 
 import jakarta.validation.Valid;
@@ -23,11 +24,11 @@ public class OrderController {
 
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Order createOrder(
+    public OrderResponseDTO createOrder(
             @PathVariable Integer userId,
             @Valid @RequestBody OrderRequestDTO dto
     ) {
-        return orderService.createOrderFromCart(userId, dto);
+        return orderService.createForUser(userId, dto);
     }
 
     @GetMapping("/user/{userId}")

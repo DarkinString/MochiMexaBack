@@ -13,6 +13,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AddressRequestDTO {
 
+    @NotBlank(message = "El alias es obligatorio")
+    @Size(max = 80, message = "El alias no puede exceder los 80 caracteres")
+    private String alias;
+
     @NotBlank(message = "La calle es obligatoria")
     @Size(max = 150, message = "La calle no puede exceder los 150 caracteres")
     private String calle;
@@ -39,4 +43,6 @@ public class AddressRequestDTO {
 
     @Size(max = 150, message = "La referencia no puede exceder los 150 caracteres")
     private String referencia;
+
+    private Boolean principal;
 }

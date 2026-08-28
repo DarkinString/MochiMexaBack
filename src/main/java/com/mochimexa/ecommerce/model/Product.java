@@ -23,6 +23,9 @@ public class Product {
     @Column(name = "id_producto")
     private Integer idProducto;
 
+    @Column(name = "slug", length = 160, unique = true)
+    private String slug;
+
     @Column(name = "nombre", nullable = false, length = 150)
     private String nombre;
 
@@ -37,6 +40,13 @@ public class Product {
 
     @Column(name = "marca", length = 100)
     private String marca;
+
+    @Lob
+    @Column(name = "imagen", columnDefinition = "MEDIUMTEXT")
+    private String imagen;
+
+    @Column(name = "badge", length = 40)
+    private String badge;
 
     @Column(name = "activo", nullable = false)
     private Boolean activo;

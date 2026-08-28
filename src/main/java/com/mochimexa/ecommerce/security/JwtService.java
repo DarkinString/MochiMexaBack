@@ -6,6 +6,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -25,20 +26,25 @@ public class JwtService {
 
     // Llave Base64 SOLO para fines didácticos.
     // En producción debe venir de una variable de entorno o secret manager.
-    private static final String SECRET_KEY =
-            "bWktbGxhdmUtc2VjcmV0YS1wYXJhLWRlbW8tamF2YS1zcHJpbmctc2VjdXJpdHktand0LTIwMjY=";
+    private final String secretKey;
+    private final long expirationTimeMs;
 
-    // 15 minutos.
-    private static final long EXPIRATION_TIME_MS = 1000L * 60 * 60;
+    public JwtService(
+            @Value("${security.jwt.secret}") String secretKey,
+            @Value("${security.jwt.expiration-ms:3600000}") long expirationTimeMs
+    ) {
+        this.secretKey = secretKey;
+        this.expirationTimeMs = expirationTimeMs;
+    }
 
     public long getExpirationTimeMs() {
 
-        return EXPIRATION_TIME_MS;
+        return expirationTimeMs;
     }
 
     public String generateToken(UserDetails userDetails) {
         Date now = new Date();
-        Date expiration = new Date(System.currentTimeMillis() + EXPIRATION_TIME_MS);
+        Date expiration = new Date(System.currentTimeMillis() + expirationTimeMs);
 
         return Jwts.builder()
                 .subject(userDetails.getUsername())
@@ -76,7 +82,7 @@ public class JwtService {
     }
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

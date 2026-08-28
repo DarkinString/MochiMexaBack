@@ -1,6 +1,7 @@
 package com.mochimexa.ecommerce.service;
 
 import com.mochimexa.ecommerce.DTO.ReviewRequestDTO;
+import com.mochimexa.ecommerce.DTO.ReviewResponseDTO;
 import com.mochimexa.ecommerce.model.Product;
 import com.mochimexa.ecommerce.model.Review;
 import com.mochimexa.ecommerce.model.User;
@@ -13,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -80,6 +82,34 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
+    @Transactional
+    public ReviewResponseDTO saveForUser(Integer userId, Integer productId, ReviewRequestDTO dto) {
+        User usuario = userService.findById(userId);
+        Product producto = productService.findById(productId);
+        Review review = reviewRepository.findByProductoIdProductoAndUsuarioIdUsuario(productId, userId)
+                .orElseGet(Review::new);
+        review.setUsuario(usuario);
+        review.setProducto(producto);
+        review.setCalificacion(dto.getCalificacion());
+        review.setComentario(dto.getComentario() == null ? null : dto.getComentario().trim());
+        review.setFecha(LocalDateTime.now());
+        return toResponse(reviewRepository.save(review));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReviewResponseDTO> findResponsesByProduct(Integer productId) {
+        return findByProductoId(productId).stream().map(this::toResponse).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteForUser(Integer userId, Integer id) {
+        Review review = findById(id);
+        if (!review.getUsuario().getIdUsuario().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reseña no encontrada");
+        }
+        reviewRepository.delete(review);
+    }
+
     // BUSCA LA RESEÑA POR SU ID Y LA ELIMINA
     @Transactional
     public void deleteById(Integer id) {
@@ -92,5 +122,18 @@ public class ReviewService {
         }
 
         reviewRepository.deleteById(id);
+    }
+
+    public ReviewResponseDTO toResponse(Review review) {
+        User user = review.getUsuario();
+        return new ReviewResponseDTO(
+                review.getIdResenias(),
+                review.getProducto().getIdProducto(),
+                user.getIdUsuario(),
+                (user.getNombre() + " " + user.getApellido()).trim(),
+                review.getCalificacion(),
+                review.getComentario(),
+                review.getFecha()
+        );
     }
 }

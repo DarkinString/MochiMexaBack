@@ -20,6 +20,13 @@ public class Rol {
     @Column(name = "rol_asignado", nullable = false, length = 50, unique = true)
     private String rolAsignado;
 
+    /**
+     * Compatibilidad con la base de datos existente, donde la tabla rol
+     * conserva esta columna obligatoria además de rol_asignado.
+     */
+    @Column(name = "nombre", nullable = false, length = 50)
+    private String nombre;
+
     @Column(name = "descripcion", nullable = false, length = 100)
     private String descripcion;
 }

@@ -6,9 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
+
+    Optional<Product> findBySlug(String slug);
+
+    boolean existsBySlug(String slug);
 
     // BUSCAR PRODUCTOS POR NOMBRE
     List<Product> findByNombreContainingIgnoreCase(String nombre);

@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String correo)
             throws UsernameNotFoundException {
 
-        User usuario = userRepository.findByCorreo(correo)
+        User usuario = userRepository.findByCorreoIgnoreCase(correo)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "Usuario no encontrado"
                 ));
@@ -42,6 +42,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(usuario.getCorreo())
                 .password(contrasenia.getPasswordHash())
+                .disabled(!Boolean.TRUE.equals(usuario.getActivo()))
                 .roles(usuario.getRol().getRolAsignado().toUpperCase())
                 .build();
     }

@@ -20,7 +20,6 @@ public class ReviewRequestDTO {
     @NotNull(message = "El ID del producto es obligatorio")
     private Integer idProducto;
 
-    @NotNull(message = "El ID del usuario es obligatorio")
     private Integer idUsuario;
 
     @NotNull(message = "La calificación es obligatoria")
@@ -31,6 +30,5 @@ public class ReviewRequestDTO {
     @Size(max = 1000, message = "El comentario no puede exceder los 1000 caracteres")
     private String comentario;
 
-    @NotNull(message = "La fecha es obligatoria")
     private LocalDateTime fecha;
 }

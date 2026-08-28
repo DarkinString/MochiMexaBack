@@ -17,8 +17,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // BUSCAR USUARIO POR CORREO
     Optional<User> findByCorreo(String correo);
 
+    Optional<User> findByCorreoIgnoreCase(String correo);
+
     // VERIFICAR SI EXISTE EL CORREO
     boolean existsByCorreo(String correo);
+
+    boolean existsByCorreoIgnoreCase(String correo);
 
     // BUSCAR USUARIOS ACTIVOS
     List<User> findByActivo(boolean activo);

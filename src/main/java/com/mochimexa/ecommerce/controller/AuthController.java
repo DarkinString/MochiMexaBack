@@ -3,6 +3,7 @@ package com.mochimexa.ecommerce.controller;
 import com.mochimexa.ecommerce.DTO.AuthResponse;
 import com.mochimexa.ecommerce.DTO.LoginRequest;
 import com.mochimexa.ecommerce.security.JwtService;
+import com.mochimexa.ecommerce.service.UserService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,15 +22,18 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UserService userService;
 
     public AuthController(
             UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder,
-            JwtService jwtService
+            JwtService jwtService,
+            UserService userService
     ) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -63,7 +67,8 @@ public class AuthController {
         return new AuthResponse(
                 token,
                 "Bearer",
-                jwtService.getExpirationTimeMs()
+                jwtService.getExpirationTimeMs(),
+                userService.toResponse(userService.findByCorreo(userDetails.getUsername()))
         );
     }
 }

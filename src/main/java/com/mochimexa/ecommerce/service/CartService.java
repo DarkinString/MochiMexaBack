@@ -47,6 +47,12 @@ public class CartService {
                 ));
     }
 
+    @Transactional
+    public Cart getOrCreateByUserId(Integer idUsuario) {
+        return cartRepository.findByUsuarioIdUsuarioAndEstado(idUsuario, "ACTIVO")
+                .orElseGet(() -> crearNuevoCarrito(idUsuario));
+    }
+
     // VERIFICA SI EXISTE CARRITO ACTIVO, SI NO CREA UNO Y AGREGA EL PRODUCTO
     @Transactional
     public Cart addItem(Integer idUsuario, AddToCartRequestDTO dto) {
@@ -56,6 +62,9 @@ public class CartService {
                 .orElseGet(() -> crearNuevoCarrito(idUsuario));
 
         Product product = productService.findById(dto.getIdProducto());
+        if (!Boolean.TRUE.equals(product.getActivo())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto no está disponible");
+        }
 
         CartDetail detalleExistente = cart.getDetalles()
                 .stream()
@@ -69,11 +78,16 @@ public class CartService {
 
         if (detalleExistente != null) {
 
+            int nuevaCantidad = detalleExistente.getCantidad() + dto.getCantidad();
+            validateStock(product, nuevaCantidad);
+
             detalleExistente.setCantidad(
-                    detalleExistente.getCantidad() + dto.getCantidad()
+                    nuevaCantidad
             );
 
         } else {
+
+            validateStock(product, dto.getCantidad());
 
             CartDetail nuevoDetalle = new CartDetail();
 
@@ -98,6 +112,7 @@ public class CartService {
                         "Detalle de carrito no encontrado con ID: " + cartDetailId
                 ));
 
+        validateStock(detalle.getProducto(), cantidad);
         detalle.setCantidad(cantidad);
 
         cartDetailRepository.save(detalle);
@@ -121,6 +136,18 @@ public class CartService {
         cart.getDetalles().remove(detalle);
 
         cartDetailRepository.delete(detalle);
+    }
+
+    @Transactional
+    public Cart updateItemQuantityForUser(Integer userId, Integer cartDetailId, Integer cantidad) {
+        CartDetail detalle = findOwnedDetail(userId, cartDetailId);
+        return updateItemQuantity(detalle.getIdCarritoDetalle(), cantidad);
+    }
+
+    @Transactional
+    public void removeItemForUser(Integer userId, Integer cartDetailId) {
+        CartDetail detalle = findOwnedDetail(userId, cartDetailId);
+        removeItem(detalle.getIdCarritoDetalle());
     }
 
     // VACÍA TODOS LOS ÍTEMS DEL CARRITO ACTIVO DE UN USUARIO
@@ -166,5 +193,20 @@ public class CartService {
         cart.setUsuario(usuario);
 
         return cartRepository.save(cart);
+    }
+
+    private CartDetail findOwnedDetail(Integer userId, Integer cartDetailId) {
+        CartDetail detalle = cartDetailRepository.findById(cartDetailId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Detalle de carrito no encontrado"));
+        if (!detalle.getCarrito().getUsuario().getIdUsuario().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Detalle de carrito no encontrado");
+        }
+        return detalle;
+    }
+
+    private void validateStock(Product product, Integer cantidad) {
+        if (cantidad == null || cantidad < 1 || product.getStock() < cantidad) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stock insuficiente");
+        }
     }
 }

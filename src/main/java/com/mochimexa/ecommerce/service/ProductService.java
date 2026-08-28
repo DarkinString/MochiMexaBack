@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.text.Normalizer;
+import java.util.Locale;
 
 @Service
 public class ProductService {
@@ -82,11 +84,14 @@ public class ProductService {
                 ));
 
         Product producto = new Product();
+        producto.setSlug(uniqueSlug(dto.getSlug(), dto.getNombre(), null));
         producto.setNombre(dto.getNombre());
         producto.setDescripcion(dto.getDescripcion());
         producto.setPrecio(dto.getPrecio());
         producto.setStock(dto.getStock());
         producto.setMarca(dto.getMarca());
+        producto.setImagen(validateImage(dto.getImagen()));
+        producto.setBadge(dto.getBadge());
         producto.setActivo(dto.getActivo() != null ? dto.getActivo() : true);
         producto.setCategoria(categoria);
 
@@ -105,11 +110,14 @@ public class ProductService {
                         "Categoría no encontrada"
                 ));
 
+        producto.setSlug(uniqueSlug(dto.getSlug(), dto.getNombre(), id));
         producto.setNombre(dto.getNombre());
         producto.setDescripcion(dto.getDescripcion());
         producto.setPrecio(dto.getPrecio());
         producto.setStock(dto.getStock());
         producto.setMarca(dto.getMarca());
+        producto.setImagen(validateImage(dto.getImagen()));
+        producto.setBadge(dto.getBadge());
 
         if (dto.getActivo() != null) {
             producto.setActivo(dto.getActivo());
@@ -149,5 +157,30 @@ public class ProductService {
         }
 
         productRepository.deleteById(id);
+    }
+
+    private String uniqueSlug(String requested, String name, Integer currentId) {
+        String source = requested == null || requested.isBlank() ? name : requested;
+        String base = Normalizer.normalize(source == null ? "producto" : source, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase(Locale.ROOT)
+                .replaceAll("[^a-z0-9]+", "-")
+                .replaceAll("(^-|-$)", "");
+        if (base.isBlank()) base = "producto";
+        String candidate = base;
+        int suffix = 2;
+        while (productRepository.findBySlug(candidate)
+                .filter(product -> !product.getIdProducto().equals(currentId))
+                .isPresent()) {
+            candidate = base + "-" + suffix++;
+        }
+        return candidate;
+    }
+
+    private String validateImage(String image) {
+        if (image != null && image.length() > 2_800_000) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La imagen excede el tamaño permitido");
+        }
+        return image;
     }
 }

@@ -32,8 +32,20 @@ public class Order {
     @Column(name = "costo_envio", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoEnvio;
 
+    @Column(name = "descuento", precision = 10, scale = 2)
+    private BigDecimal descuento;
+
     @Column(name = "total", nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
+
+    @Column(name = "metodo_pago", length = 30)
+    private String metodoPago;
+
+    @Column(name = "estado_pago", length = 30)
+    private String estadoPago;
+
+    @Column(name = "solicitud_id", length = 80, unique = true)
+    private String solicitudId;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)

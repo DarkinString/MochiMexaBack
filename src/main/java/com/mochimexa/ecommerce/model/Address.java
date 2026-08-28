@@ -21,6 +21,9 @@ public class Address {
     @Column(name = "id_direccion")
     private Integer idDireccion;
 
+    @Column(name = "alias", length = 80)
+    private String alias;
+
     @Column(name = "calle", nullable = false, length = 150)
     private String calle;
 
@@ -41,6 +44,9 @@ public class Address {
 
     @Column(name = "referencia", length = 150)
     private String referencia;
+
+    @Column(name = "principal")
+    private Boolean principal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)

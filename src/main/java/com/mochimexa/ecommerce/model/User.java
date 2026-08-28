@@ -33,6 +33,10 @@ public class User {
     @Column(name = "telefono", length = 20)
     private String telefono;
 
+    @Lob
+    @Column(name = "foto", columnDefinition = "MEDIUMTEXT")
+    private String foto;
+
     @Column(name = "fecha_registro", nullable = false)
     private LocalDateTime fechaRegistro;
 

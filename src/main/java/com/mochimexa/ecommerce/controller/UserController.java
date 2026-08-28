@@ -2,6 +2,7 @@ package com.mochimexa.ecommerce.controller;
 
 import com.mochimexa.ecommerce.DTO.UserRequestDTO;
 import com.mochimexa.ecommerce.model.User;
+import com.mochimexa.ecommerce.DTO.UserResponseDTO;
 import com.mochimexa.ecommerce.service.UserService;
 
 import jakarta.validation.Valid;
@@ -33,8 +34,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User create(@Valid @RequestBody UserRequestDTO dto) {
-        return userService.create(dto);
+    public UserResponseDTO create(@Valid @RequestBody UserRequestDTO dto) {
+        return userService.toResponse(userService.create(dto));
     }
 
     @PutMapping("/{id}")

@@ -1,6 +1,8 @@
 package com.mochimexa.ecommerce.service;
 
 import com.mochimexa.ecommerce.DTO.UserRequestDTO;
+import com.mochimexa.ecommerce.DTO.UpdateProfileRequestDTO;
+import com.mochimexa.ecommerce.DTO.UserResponseDTO;
 import com.mochimexa.ecommerce.model.Contrasenia;
 import com.mochimexa.ecommerce.model.Rol;
 import com.mochimexa.ecommerce.model.User;
@@ -51,27 +53,42 @@ public class UserService {
                 ));
     }
 
+    @Transactional(readOnly = true)
+    public User findByCorreo(String correo) {
+        return userRepository.findByCorreoIgnoreCase(correo)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Usuario no encontrado"
+                ));
+    }
+
     @Transactional
     public User create(UserRequestDTO dto) {
 
-        if (userRepository.existsByCorreo(dto.getCorreo())) {
+        String correo = dto.getCorreo() == null ? "" : dto.getCorreo().trim().toLowerCase();
+        if (correo.isBlank() || dto.getContrasenia() == null || dto.getContrasenia().length() < 8) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Correo y contraseña válida son obligatorios");
+        }
+        if (userRepository.existsByCorreoIgnoreCase(correo)) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "El correo ya está registrado"
             );
         }
 
-        Rol rol = rolRepository.findById(dto.getIdRol())
+        // El registro público nunca decide privilegios desde el navegador.
+        Rol rol = rolRepository.findByRolAsignadoIgnoreCase("CLIENTE")
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Rol no encontrado"
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        "El rol CLIENTE no está configurado"
                 ));
 
         User usuario = new User();
         usuario.setNombre(dto.getNombre());
         usuario.setApellido(dto.getApellido());
-        usuario.setCorreo(dto.getCorreo());
+        usuario.setCorreo(correo);
         usuario.setTelefono(dto.getTelefono());
+        usuario.setFoto(null);
         usuario.setFechaRegistro(LocalDateTime.now());
         usuario.setActivo(true);
         usuario.setRol(rol);
@@ -94,11 +111,8 @@ public class UserService {
 
         User usuario = findById(id);
 
-        Rol rol = rolRepository.findById(dto.getIdRol())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Rol no encontrado"
-                ));
+        Rol rol = dto.getIdRol() == null ? usuario.getRol() : rolRepository.findById(dto.getIdRol())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rol no encontrado"));
 
         usuario.setNombre(dto.getNombre());
         usuario.setApellido(dto.getApellido());
@@ -106,6 +120,51 @@ public class UserService {
         usuario.setRol(rol);
 
         return userRepository.save(usuario);
+    }
+
+    @Transactional
+    public User updateOwnProfile(Integer id, UpdateProfileRequestDTO dto) {
+        User usuario = findById(id);
+        String correo = dto.getCorreo().trim().toLowerCase();
+        userRepository.findByCorreoIgnoreCase(correo)
+                .filter(existing -> !existing.getIdUsuario().equals(id))
+                .ifPresent(existing -> {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El correo ya está registrado");
+                });
+        if (dto.getFoto() != null && dto.getFoto().length() > 2_800_000) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La foto excede el tamaño permitido");
+        }
+        usuario.setNombre(dto.getNombre().trim());
+        usuario.setApellido(dto.getApellido().trim());
+        usuario.setCorreo(correo);
+        usuario.setTelefono(dto.getTelefono() == null ? null : dto.getTelefono().trim());
+        usuario.setFoto(dto.getFoto());
+        return userRepository.save(usuario);
+    }
+
+    @Transactional
+    public void changePassword(Integer id, String actual, String nueva) {
+        Contrasenia contrasenia = contraseniaRepository.findByUsuarioIdUsuario(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contraseña no encontrada"));
+        if (!passwordEncoder.matches(actual, contrasenia.getPasswordHash())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña actual no coincide");
+        }
+        contrasenia.setPasswordHash(passwordEncoder.encode(nueva));
+        contraseniaRepository.save(contrasenia);
+    }
+
+    public UserResponseDTO toResponse(User usuario) {
+        return new UserResponseDTO(
+                usuario.getIdUsuario(),
+                usuario.getNombre(),
+                usuario.getApellido(),
+                usuario.getCorreo(),
+                usuario.getTelefono(),
+                usuario.getFoto(),
+                usuario.getFechaRegistro(),
+                usuario.getActivo(),
+                usuario.getRol().getRolAsignado()
+        );
     }
 
     @Transactional

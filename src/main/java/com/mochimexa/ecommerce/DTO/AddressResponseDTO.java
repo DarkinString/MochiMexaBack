@@ -12,6 +12,7 @@ import lombok.Setter;
 public class AddressResponseDTO {
 
     private Integer idDireccion;
+    private String alias;
     private String calle;
     private String numero;
     private String colonia;
@@ -19,5 +20,6 @@ public class AddressResponseDTO {
     private String ciudad;
     private String estado;
     private String referencia;
+    private Boolean principal;
     private Integer idUsuario;
 }

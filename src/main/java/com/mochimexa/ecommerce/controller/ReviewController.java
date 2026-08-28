@@ -2,6 +2,7 @@ package com.mochimexa.ecommerce.controller;
 
 import com.mochimexa.ecommerce.DTO.ReviewRequestDTO;
 import com.mochimexa.ecommerce.model.Review;
+import com.mochimexa.ecommerce.DTO.ReviewResponseDTO;
 import com.mochimexa.ecommerce.service.ReviewService;
 
 import jakarta.validation.Valid;
@@ -21,10 +22,10 @@ public class ReviewController {
     }
 
     @GetMapping("/product/{productId}")
-    public List<Review> getByProductId(
+    public List<ReviewResponseDTO> getByProductId(
             @PathVariable Integer productId
     ) {
-        return reviewService.findByProductoId(productId);
+        return reviewService.findResponsesByProduct(productId);
     }
 
     @PostMapping("/user/{userId}")

@@ -15,10 +15,13 @@ import java.math.BigDecimal;
 public class ProductRequestDTO {
 
     private String nombre;
+    private String slug;
     private String descripcion;
     private BigDecimal precio;
     private Integer stock;
     private String marca;
+    private String imagen;
+    private String badge;
     private Boolean activo;
     private Integer idCategoria;
 
