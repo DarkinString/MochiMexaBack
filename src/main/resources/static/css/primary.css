@@ -1,0 +1,63 @@
+
+/*Identificamos la paleta de colores*/
+:root {
+    --primario: #8DBA76;  /* color titulo en figma  es: #40682E */
+    --secundario: #F4A3C1;
+    --terciario: #FF8C00;
+    --neutral: #FDF9F2;
+    --color-texto: rgb(27, 32, 33); /*  color texto Figma : #41493E */
+}
+
+body {
+    background-color: var(--neutral);
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.nunito {
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+
+/*Animación para el scrolleo suave*/
+html {
+    scroll-behavior: smooth;
+}
+
+/*Propuesta de tamaño para los contenedores*/
+.contenedor {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+
+/*Administrador de Productos*/
+#nombreProducto,
+#descripcionProducto,
+#categoriaProducto,
+#seleccionCategoria
+#simboloPrecio,
+#stockProducto,
+#previewDescripcion{
+    font-size: 1rem;
+}
+
+/*-----------------------------*/

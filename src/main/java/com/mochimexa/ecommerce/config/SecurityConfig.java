@@ -49,6 +49,20 @@ public class SecurityConfig {
                                 "/error"
                         ).permitAll()
 
+                        // FRONTEND EMPAQUETADO EN src/main/resources/static
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/favicon.ico",
+                                "/assets/**",
+                                "/css/**",
+                                "/cssAdmin/**",
+                                "/js/**",
+                                "/jsAdmin/**",
+                                "/pages/**",
+                                "/pagesAdmin/**"
+                        ).permitAll()
+
                         // REGISTRO DE USUARIO
                         .requestMatchers(
                                 HttpMethod.POST,
